@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Info</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <script src="{{ url_for('static', filename='js/sweetalert2@11.js') }}"></script>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            font-weight: bold;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .modal-header .btn-close {
+            color: white;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* SweetAlert Styles */
+        .swal2-popup {
+            border-radius: 10px;
+        }
+
+        .swal2-title {
+            font-size: 1.5rem;
+        }
+
+        .swal2-confirm {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .swal2-confirm:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 20px;
+            }
+
+            .table th,
+            .table td {
+                padding: 10px;
+            }
+
+            .btn-sm {
+                padding: 4px 8px;
+                font-size: 10px;
+            }
+
+            .modal-dialog {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sb-nav-fixed">
+        <nav class="navbar navbar-expand navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Dashboard</a>
+                <a class="btn btn-outline-light" href="{{ url_for('logout') }}">Déconnexion</a>
+            </div>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav sb-sidenav-dark">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Dashboard</div>
+                            <a class="nav-link " href="{{url_for('intervantion')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Intervantions
+                            </a>
+                            <a class="nav-link active" href="{{url_for('intervenant')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                Intervenants
+                            </a>
+                            <a class="nav-link" href="{{url_for('client')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-cogs"></i></div>
+                                Clients
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+            <!-- <div class="user-info">
+                id :{{user['id']}}
+                Nom:{{user['nom']}}
+                Prenom:{{user['prenom']}}
+
+                {% if role=='client' %}
+                Direction:{{user['direction']}}
+                {% else %}
+                Poste:{{user['poste']}}
+                {% endif %}
+            </div> -->
+            <div class="container mt-5">
+                <div>
+                    <h3>Intervention</h3>
+                    <table class="table table-bordered">
+                        {% if interventions %}
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Motive</th>
+                                <th>Statut</th>
+                                <th>Type</th>
+                                {% if role=='client' %}
+                                <th>Intervenant</th>
+                                {% else %}
+                                <th>Client</th>
+                                {% endif %}
+                                <th>date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for intervention in interventions %}
+                            <tr>
+                                <td class="0-intervention">{{intervention['id']}}</td>
+                                <td class="1-intervention">{{intervention['motive']}}</td>
+                                <td class="etat">{{intervention['etat']}}</td>
+                                <td class="4-intervention">{{intervention['type']}}</td>
+                                <td>
+                                    {% if role=='client' %}
+                                    <form action="{{url_for('intervenant_info')}}" method="post">
+                                        <input type="text" hidden name="id" value="{{intervention['intervenant']}}">
+                                        <button class="btn btn-success btn-sm"
+                                            type="submit">{{intervention['intervenant']}}</button>
+                                    </form>
+                                    {% else %}
+                                    <form action="{{url_for('client_info')}}" method="post">
+                                        <input type="text" hidden name="id" value="{{intervention['client']}}">
+                                        <button class="btn btn-success btn-sm"
+                                            type="submit">{{intervention['client']}}</button>
+                                    </form>
+                                    {% endif %}
+                                </td>
+                                <td>{{intervention['date']}}</td>
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                        {% else %}
+                        <tr>
+                            <td colspan="7">No data</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-6 chartContainer">
+                {% if image!=0 %}
+                <img src="data:image/png;base64,{{image}}" />
+                {% else %}
+                <p>No data</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+
+</html>
