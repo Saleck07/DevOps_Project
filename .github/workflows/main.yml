@@ -21,7 +21,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t saleckameine/Devops_Project:latest .
+          docker build -t saleckameine/devops_project:latest .
           
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -31,5 +31,5 @@ jobs:
           
       - name: Push Docker image to Docker Hub
         run: |
-          docker push saleckameine/Devops_Project:latest
+          docker push saleckameine/devops_project:latest
         if: ${{ success() }} 
